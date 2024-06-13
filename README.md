@@ -9,7 +9,7 @@ This is a simple task management application built with React. The app allows us
 1. Clone this repository
 
    ```sh
-   git clone ?
+  git clone git@github.com:pierodev0/todo-react-app.git
    ```
 
 2. Install dependencies using pnpm.
