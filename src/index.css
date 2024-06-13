@@ -56,3 +56,9 @@ input[type='checkbox']:checked {
 hr {
   @apply h-[1.5px] border-none bg-gray-300;
 }
+
+.wrapper {
+  max-width: 1024px;
+  padding-inline: 24px;
+  margin: 0 auto;
+}

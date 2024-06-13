@@ -34,7 +34,7 @@ function App() {
             onEditTask={onEditTask}
           />
         ) : (
-          <div className='p-4 px-6'>
+          <div className='p-4 wrapper'>
             <p className='italic text-gray-400'>No hay tareas por hacer</p>
           </div>
         )}
@@ -53,7 +53,7 @@ function App() {
 function ListTasks({ tasks, onCompletedTasks, onDeleteTask, onEditTask }) {
   const todoTasks = tasks.filter((t) => t.done == false);
   return (
-    <div className='p-4 px-6'>
+    <div className='p-4 px-6 wrapper'>
       {todoTasks.map((task) => (
         <Task
           key={task.id}
@@ -70,12 +70,12 @@ function ListTasks({ tasks, onCompletedTasks, onDeleteTask, onEditTask }) {
 function CompletedTasks({ tasks, onCompletedTasks, onDeleteTask }) {
   const completedTasks = tasks.filter((t) => t.done == true);
   return (
-    <section>
-      <div className='flex justify-between gap-4 px-6 pb-2 pt-2 font-medium'>
+    <section className='wrapper'>
+      <div className='flex justify-between gap-4 pb-2 pt-2 font-medium '>
         <h2 className='pb-1'>Completadas</h2>
         <h2 className='px-2'>+</h2>
       </div>
-      <div className='px-6'>
+      <div className=''>
         {completedTasks.map((task) => (
           <Task
             key={task.id}
@@ -173,7 +173,7 @@ function Header() {
   return (
     <header className='pt-8'>
       <h1 className='pb-5 text-center text-2xl font-medium'>Tareas</h1>
-      <div className='flex justify-center gap-4 px-6 pb-2 font-medium'>
+      <div className='flex justify-center gap-4 px-6 pb-6 font-medium'>
         <h2 className=''>Mis tareas</h2>
         <h2 className=''>+Nueva lista</h2>
       </div>
