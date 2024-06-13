@@ -1,8 +1,18 @@
-## Todo React App
+<div align="center">
+    <a href="https://todo-react-app-iota-seven.vercel.app/">
+    <img src="./assets/636shots_so.png" /> 
+    </a>
+  <h3>
+    <strong>Todo React App</strong>
+  </h3>
+  <a href="https://todo-react-app-iota-seven.vercel.app/">
+        ✨ Website ✨
+    </a>
+</div>
 
-![Screenshots](./assets/636shots_so.png)
 
-This is a simple task management application built with React. The app allows users to add, delete, and mark tasks as completed. It also provides a user interface for managing and viewing tasks.
+
+
 
 ### Install
 
