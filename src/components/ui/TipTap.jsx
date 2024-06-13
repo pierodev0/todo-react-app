@@ -34,7 +34,7 @@ const Tiptap = () => {
   return (
     <div className='flex justify-between p-4'>
       <button onClick={handleClick}>Editar</button>
-      <EditorContent editor={editor} className='line-through'/>
+      <EditorContent editor={editor} className='line-through '/>
     </div>
   );
 };

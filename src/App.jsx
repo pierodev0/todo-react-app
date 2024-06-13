@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import IconTrash from './components/icons/IconTrash';
-import IconEdit from './components/icons/IconEdit';
 import { initialTasks } from './data';
 import Modal from './components/ui/Modal';
 import Swal from 'sweetalert2';
+import Task from './components/ui/Task';
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
@@ -15,9 +14,10 @@ function App() {
   function onDeleteTask(taskId) {
     setTasks(tasks.filter((t) => t.id !== taskId));
   }
-
+  function onEditTask(task) {
+    setTasks(tasks.map((t) => (t.id === task.id ? { ...task } : t)));
+  }
   function onCompletedTasks(id) {
-    console.log(id);
     setTasks((prevTasks) =>
       prevTasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
     );
@@ -31,6 +31,7 @@ function App() {
             tasks={tasks}
             onCompletedTasks={onCompletedTasks}
             onDeleteTask={onDeleteTask}
+            onEditTask={onEditTask}
           />
         ) : (
           <div className='p-4 px-6'>
@@ -49,47 +50,7 @@ function App() {
   );
 }
 
-function Task({ onCompletedTasks, task, onDeleteTask }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [taskText, setTaskText] = useState(task.text);
-
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleTextChange = (e) => {
-    setTaskText(e.target.innerText);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-    // Aquí puedes llamar a una función para guardar los cambios, si es necesario
-  };
-  return (
-    <div className='flex items-center gap-2'>
-      <input
-        type='checkbox'
-        className='rounded-full p-2'
-        checked={task.done}
-        onChange={() => onCompletedTasks(task.id)}
-      />
-
-      <p
-        contentEditable={isEditing}
-        className={`px-2 py-1 ${task.done ? 'line-through' : null}`}
-      >
-        {task.text}
-      </p>
-      <div className='flex-1'></div>
-      <div className='flex'>
-        <IconEdit onClick={handleEditClick} />
-        <IconTrash onClick={() => onDeleteTask(task.id)} />
-      </div>
-    </div>
-  );
-}
-
-function ListTasks({ tasks, onCompletedTasks, onDeleteTask }) {
+function ListTasks({ tasks, onCompletedTasks, onDeleteTask, onEditTask }) {
   const todoTasks = tasks.filter((t) => t.done == false);
   return (
     <div className='p-4 px-6'>
@@ -100,6 +61,7 @@ function ListTasks({ tasks, onCompletedTasks, onDeleteTask }) {
           onCompletedTasks={onCompletedTasks}
           task={task}
           onDeleteTask={onDeleteTask}
+          onEditTask={onEditTask}
         />
       ))}
     </div>
@@ -174,7 +136,7 @@ function Form({ onAddTask }) {
           <header className='p-6 pb-0'>
             <h2 className='text-2xl dark:text-blue-800'>Nueva tarea</h2>
           </header>
-          <div
+          <form
             action=''
             className='p-6'
             onSubmit={handleSubmit}
@@ -184,21 +146,22 @@ function Form({ onAddTask }) {
               className='w-full rounded-md p-2'
               value={task}
               onChange={(e) => setTask(e.target.value)}
+              autoFocus={true}
             />
-          </div>
-          <form
-            className='modal-actions'
-            onSubmit={handleSubmit}
-          >
-            <button className='button'>Reset</button>
-            <div className='flex-1'></div>
-            <button
-              className='button'
-              onClick={() => closeModal()}
+            <div
+              className='modal-actions'
+              onSubmit={handleSubmit}
             >
-              Cancel
-            </button>
-            <button className='button'>Save</button>
+              
+              <div className='flex-1'></div>
+              <button
+                className='button'
+                onClick={() => closeModal()}
+              >
+                Cancel
+              </button>
+              <button className='button'>Save</button>
+            </div>
           </form>
         </Modal>
       )}
