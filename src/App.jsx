@@ -3,7 +3,7 @@ import IconTrash from './components/icons/IconTrash';
 import IconEdit from './components/icons/IconEdit';
 import { initialTasks } from './data';
 import Modal from './components/ui/Modal';
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
@@ -12,12 +12,8 @@ function App() {
   function onAddTask(task) {
     setTasks((t) => [...t, task]);
   }
-  function deleteTask(taskId) {
+  function onDeleteTask(taskId) {
     setTasks(tasks.filter((t) => t.id !== taskId));
-  }
-
-  function handleDelete(id) {
-    deleteTask(id);
   }
 
   function onCompletedTasks(id) {
@@ -34,17 +30,18 @@ function App() {
           <ListTasks
             tasks={tasks}
             onCompletedTasks={onCompletedTasks}
+            onDeleteTask={onDeleteTask}
           />
         ) : (
           <div className='p-4 px-6'>
-             <p className='italic text-gray-400'>No hay tareas por hacer</p>
+            <p className='italic text-gray-400'>No hay tareas por hacer</p>
           </div>
-         
         )}
         <hr />
         <CompletedTasks
           tasks={tasks}
           onCompletedTasks={onCompletedTasks}
+          onDeleteTask={onDeleteTask}
         />
         <Form onAddTask={onAddTask} />
       </main>
@@ -52,7 +49,22 @@ function App() {
   );
 }
 
-function Task({ onCompletedTasks, task }) {
+function Task({ onCompletedTasks, task, onDeleteTask }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [taskText, setTaskText] = useState(task.text);
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleTextChange = (e) => {
+    setTaskText(e.target.innerText);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+    // Aquí puedes llamar a una función para guardar los cambios, si es necesario
+  };
   return (
     <div className='flex items-center gap-2'>
       <input
@@ -63,21 +75,21 @@ function Task({ onCompletedTasks, task }) {
       />
 
       <p
-        // contentEditable='false'
+        contentEditable={isEditing}
         className={`px-2 py-1 ${task.done ? 'line-through' : null}`}
       >
         {task.text}
       </p>
       <div className='flex-1'></div>
       <div className='flex'>
-        <IconEdit />
-        <IconTrash />
+        <IconEdit onClick={handleEditClick} />
+        <IconTrash onClick={() => onDeleteTask(task.id)} />
       </div>
     </div>
   );
 }
 
-function ListTasks({ tasks, onCompletedTasks }) {
+function ListTasks({ tasks, onCompletedTasks, onDeleteTask }) {
   const todoTasks = tasks.filter((t) => t.done == false);
   return (
     <div className='p-4 px-6'>
@@ -87,12 +99,13 @@ function ListTasks({ tasks, onCompletedTasks }) {
           text={task.text}
           onCompletedTasks={onCompletedTasks}
           task={task}
+          onDeleteTask={onDeleteTask}
         />
       ))}
     </div>
   );
 }
-function CompletedTasks({ tasks, onCompletedTasks }) {
+function CompletedTasks({ tasks, onCompletedTasks, onDeleteTask }) {
   const completedTasks = tasks.filter((t) => t.done == true);
   return (
     <section>
@@ -106,6 +119,7 @@ function CompletedTasks({ tasks, onCompletedTasks }) {
             key={task.id}
             onCompletedTasks={onCompletedTasks}
             task={task}
+            onDeleteTask={onDeleteTask}
           />
         ))}
       </div>
@@ -121,7 +135,7 @@ function Form({ onAddTask }) {
   }
 
   function closeModal() {
-    setTask("")
+    setTask('');
     setIsOpen(false);
   }
 
@@ -130,9 +144,9 @@ function Form({ onAddTask }) {
 
     if (!task) {
       Swal.fire({
-        title: "Campo vacio!",
-        text: "Agrega una tarea",
-        icon: "error",
+        title: 'Campo vacio!',
+        text: 'Agrega una tarea',
+        icon: 'error',
       });
       return;
     }

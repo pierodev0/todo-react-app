@@ -1,4 +1,4 @@
-const IconEdit = () => {
+const IconEdit = ({onClick}) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -7,6 +7,7 @@ const IconEdit = () => {
       strokeWidth={1.5}
       stroke='currentColor'
       className='size-8 text-blue-400 rounded-md p-1 cursor-pointer hover:bg-blue-400/10 transition'
+      onClick={onClick}
     >
       <path
         strokeLinecap='round'
