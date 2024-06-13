@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  p,
+  input,
+  h1,
+  h2,
+  h3 {
+    @apply text-gray-700 dark:text-white;
+  }
+
+  input {
+    @apply bg-white text-slate-900 outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  .button {
+    @apply rounded-full px-5 py-2 text-blue-700 hover:bg-sky-300;
+  }
+
+  .modal-actions {
+    @apply flex justify-end gap-2 p-6 pt-0;
+  }
+
+  .modal {
+    @apply fixed left-1/2 top-1/2 z-20 w-5/6 max-w-[768px] -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-sky-200;
+  }
+
+  body {
+    @apply bg-white dark:bg-slate-800;
+  }
+}
+
+input[type='checkbox'] {
+  width: 1.2em;
+  height: 1.2em;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 2px solid #adadad;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+}
+
+input[type='checkbox']:checked {
+  border: none;
+  background-image: url('/public/icon-check.svg');
+}
+
+hr {
+  @apply h-[1.5px] border-none bg-gray-300;
+}
