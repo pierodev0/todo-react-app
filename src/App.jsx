@@ -3,10 +3,12 @@ import IconTrash from './components/icons/IconTrash';
 import IconEdit from './components/icons/IconEdit';
 import { initialTasks } from './data';
 import Modal from './components/ui/Modal';
+import Swal from "sweetalert2";
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
 
+  const todoTasks = tasks.filter((t) => t.done == false);
   function onAddTask(task) {
     setTasks((t) => [...t, task]);
   }
@@ -28,10 +30,17 @@ function App() {
     <>
       <main className='relative h-screen'>
         <Header />
-        <ListTasks
-          tasks={tasks}
-          onCompletedTasks={onCompletedTasks}
-        />
+        {todoTasks.length > 0 ? (
+          <ListTasks
+            tasks={tasks}
+            onCompletedTasks={onCompletedTasks}
+          />
+        ) : (
+          <div className='p-4 px-6'>
+             <p className='italic text-gray-400'>No hay tareas por hacer</p>
+          </div>
+         
+        )}
         <hr />
         <CompletedTasks
           tasks={tasks}
@@ -89,7 +98,7 @@ function CompletedTasks({ tasks, onCompletedTasks }) {
     <section>
       <div className='flex justify-between gap-4 px-6 pb-2 pt-2 font-medium'>
         <h2 className='pb-1'>Completadas</h2>
-        <h2 className=''>+</h2>
+        <h2 className='px-2'>+</h2>
       </div>
       <div className='px-6'>
         {completedTasks.map((task) => (
@@ -105,18 +114,28 @@ function CompletedTasks({ tasks, onCompletedTasks }) {
 }
 function Form({ onAddTask }) {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [task, setTask] = useState('');
 
   function openModal() {
     setIsOpen(true);
   }
 
   function closeModal() {
+    setTask("")
     setIsOpen(false);
   }
 
-  const [task, setTask] = useState('');
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (!task) {
+      Swal.fire({
+        title: "Campo vacio!",
+        text: "Agrega una tarea",
+        icon: "error",
+      });
+      return;
+    }
 
     const newTask = {
       id: crypto.randomUUID(),
